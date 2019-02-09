@@ -1,12 +1,14 @@
 # whiteboxR
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/giswqs/whitebox-r-binder/master?urlpath=rstudio)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/whitebox)](https://cran.r-project.org/package=whitebox)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://gishub.org/whiteboxR-cloud)
 [![Binder](https://binder.pangeo.io/badge.svg)](https://binder.pangeo.io/v2/gh/giswqs/whitebox-r-binder/master?urlpath=rstudio)
 [![Build Status](https://travis-ci.org/giswqs/whiteboxR.svg?branch=master)](https://travis-ci.org/giswqs/whiteboxR)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/giswqs/whiteboxR?branch=master&svg=true)](https://ci.appveyor.com/project/giswqs/whiteboxR)
 [![docs](https://img.shields.io/badge/docs-passing-brightgreen.svg)](https://giswqs.github.io/whiteboxR)
 [![codecov](https://codecov.io/gh/giswqs/whiteboxR/branch/master/graph/badge.svg)](https://codecov.io/gh/giswqs/whiteboxR)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CRAN download count](https://cranlogs.r-pkg.org/badges/grand-total/whitebox)](https://cranlogs.r-pkg.org/badges/grand-total/whitebox)
 [![Donate](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
 
 
@@ -17,6 +19,7 @@ This repository is related to the **whitebox** R package for geospatial analysis
 * Authors: Dr. John Lindsay (<http://www.uoguelph.ca/~hydrogeo/index.html>)
 * Contributors: Dr. Qiusheng Wu (<https://wetlands.io>)
 * GitHub repo: <https://github.com/giswqs/whiteboxR>
+* CRAN link: <https://cran.r-project.org/package=whitebox>
 * WhiteboxTools: <https://github.com/jblindsay/whitebox-tools>
 * User Manual: <https://jblindsay.github.io/wbt_book>
 * Free software: [MIT license](https://opensource.org/licenses/MIT)
@@ -42,7 +45,7 @@ There are three ways to install the **whitebox** R package.
 
 ### 1. CRAN
 
-**whitebox** will be available on CRAN soon. Once it is available on CRAN, you can install it with:
+**whitebox** is now available on [CRAN](https://cran.r-project.org/package=whitebox), so you can install it with:
 
 ```R
 install.packages("whitebox")
@@ -50,7 +53,7 @@ install.packages("whitebox")
 
 ### 2. R-Forge
 
-**whitebox** is now available on [R-Forge](https://r-forge.r-project.org/R/?group_id=2337), so you can install it with:
+**whitebox** is also available on [R-Forge](https://r-forge.r-project.org/R/?group_id=2337), so you can install it with:
 
 ```R
 install.packages("whitebox", repos="http://R-Forge.R-project.org")
@@ -116,9 +119,9 @@ library(whitebox)
 dem <- system.file("extdata", "DEM.tif", package="whitebox")
 
 # Run tools
-feature_preserving_denoise(dem, "./smoothed.tif", filter=9)
+feature_preserving_denoise(dem, "./smoothed.tif", filter=9, verbose_mode = TRUE)
 breach_depressions("./smoothed.tif", "./breached.tif")
-d_inf_flow_accumulation(dem, "./flow_accum.tif", verbose_mode = FALSE)
+d_inf_flow_accumulation(dem, "./flow_accum.tif")
 ```
 
 
