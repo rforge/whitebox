@@ -30,7 +30,6 @@ print(wbt_view_code("breach_depressions"))
 
 ## ----eval=FALSE----------------------------------------------------------
 #  library(whitebox)
-#  
 #  # Set input raster DEM file
 #  dem <- system.file("extdata", "DEM.tif", package="whitebox")
 #  
