@@ -14,5 +14,5 @@ BugReports: https://github.com/giswqs/whiteboxR/issues
 Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-02-16 16:02:38 UTC; qiusheng
+Packaged: 2019-02-27 21:59:46 UTC; qiusheng
 Author: Qiusheng Wu [aut, cre]
