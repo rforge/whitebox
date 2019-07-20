@@ -7,12 +7,13 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta name="author" content="Qiusheng Wu" />
 
-<meta name="date" content="2019-05-25" />
+<meta name="date" content="2019-07-20" />
 
 <title>whitebox examples</title>
 
@@ -20,9 +21,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,14 +33,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -48,9 +51,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -96,7 +99,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -303,20 +306,20 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">whitebox examples</h1>
 <h4 class="author">Qiusheng Wu</h4>
-<h4 class="date">2019-05-25</h4>
+<h4 class="date">2019-07-20</h4>
 
 
 
 <div id="about-whiteboxtools" class="section level2">
 <h2>About WhiteboxTools</h2>
 <p>Load the whitebox R package.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(whitebox)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(whitebox)</span></code></pre></div>
 <p>Prints the whitebox-tools help…a listing of available commands.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_help</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">print</span>(<span class="kw">wbt_help</span>())</span></code></pre></div>
 <pre><code>## Performing one-time download of WhiteboxTools binary from
 ##      https://www.uoguelph.ca/~hydrogeo/WhiteboxTools/WhiteboxTools_linux_amd64.tar.xz 
 ## (This could take a few minutes, please be patient...)
-## WhiteboxTools binary is located at:  /tmp/RtmpZgMHj0/Rinst5bad156c79c3/whitebox/WBT/whitebox_tools 
+## WhiteboxTools binary is located at:  /tmp/RtmpAKLdU1/Rinst2d715a8a9b86/whitebox/WBT/whitebox_tools 
 ## You can now start using whitebox
 ##     &gt; library(whitebox)
 ##     &gt; wbt_version()
@@ -339,7 +342,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [17] &quot;&gt;&gt; ./whitebox-tools -r=lidar_info --cd=\&quot;/path/to/data/\&quot; -i=input.las --vlr --geokeys&quot;                    
 ## [18] &quot;&quot;</code></pre>
 <p>Prints the whitebox-tools license.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_license</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">print</span>(<span class="kw">wbt_license</span>())</span></code></pre></div>
 <pre><code>##  [1] &quot;WhiteboxTools License&quot;                                                                                
 ##  [2] &quot;Copyright 2017-2019 John Lindsay&quot;                                                                     
 ##  [3] &quot;&quot;                                                                                                     
@@ -358,7 +361,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [16] &quot;OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&quot;  
 ## [17] &quot;CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&quot;</code></pre>
 <p>Prints the whitebox-tools version.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_version</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">print</span>(<span class="kw">wbt_version</span>())</span></code></pre></div>
 <pre><code>## [1] &quot;WhiteboxTools v0.16.0 by Dr. John B. Lindsay (c) 2017-2019&quot;                   
 ## [2] &quot;&quot;                                                                             
 ## [3] &quot;WhiteboxTools an advanced geospatial data analysis platform developed at&quot;     
@@ -366,13 +369,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [5] &quot;Group (GHRG). See https://www.uoguelph.ca/~hydrogeo/WhiteboxTools/index.html &quot;
 ## [6] &quot;for more details.&quot;</code></pre>
 <p>Prints the toolbox for a specific tool.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_toolbox</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">print</span>(<span class="kw">wbt_toolbox</span>())</span></code></pre></div>
 <p>List all available tools in whitebox-tools.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_list_tools</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">print</span>(<span class="kw">wbt_list_tools</span>())</span></code></pre></div>
 <p>Lists tools with ‘lidar’ in tool name or description.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_list_tools</span>(<span class="st">&quot;lidar&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">print</span>(<span class="kw">wbt_list_tools</span>(<span class="st">&quot;lidar&quot;</span>))</span></code></pre></div>
 <p>Prints the help for a specific tool.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_tool_help</span>(<span class="st">&quot;lidar_info&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">print</span>(<span class="kw">wbt_tool_help</span>(<span class="st">&quot;lidar_info&quot;</span>))</span></code></pre></div>
 <pre><code>##  [1] &quot;LidarInfo&quot;                                                                                                                                                                              
 ##  [2] &quot;Description:&quot;                                                                                                                                                                           
 ##  [3] &quot;Prints information about a LiDAR (LAS) dataset, including header, point return frequency, and classification data and information about the variable length records (VLRs) and geokeys.&quot;
@@ -385,27 +388,30 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [10] &quot;--vlr              Flag indicating whether or not to print the variable length records (VLRs).&quot;                                                                                         
 ## [11] &quot;--geokeys          Flag indicating whether or not to print the geokeys.&quot;                                                                                                                
 ## [12] &quot;Example usage:&quot;                                                                                                                                                                         
-## [13] &quot;&gt;&gt;./tmpRtmpZgMHj0Rinst5bad156c79c3whiteboxWBTwhitebox_tools -r=LidarInfo -v --wd=\&quot;/path/to/data/\&quot; -i=file.las --vlr --geokeys\&quot;&quot;                                                      
-## [14] &quot;./tmpRtmpZgMHj0Rinst5bad156c79c3whiteboxWBTwhitebox_tools -r=LidarInfo --wd=\&quot;/path/to/data/\&quot; -i=file.las&quot;</code></pre>
+## [13] &quot;&gt;&gt;./tmpRtmpAKLdU1Rinst2d715a8a9b86whiteboxWBTwhitebox_tools -r=LidarInfo -v --wd=\&quot;/path/to/data/\&quot; -i=file.las --vlr --geokeys\&quot;&quot;                                                      
+## [14] &quot;./tmpRtmpAKLdU1Rinst2d715a8a9b86whiteboxWBTwhitebox_tools -r=LidarInfo --wd=\&quot;/path/to/data/\&quot; -i=file.las&quot;</code></pre>
 <p>Retrieves the tool parameter descriptions for a specific tool.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_tool_parameters</span>(<span class="st">&quot;slope&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">print</span>(<span class="kw">wbt_tool_parameters</span>(<span class="st">&quot;slope&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;{\&quot;parameters\&quot;: [{\&quot;name\&quot;:\&quot;Input DEM File\&quot;,\&quot;flags\&quot;:[\&quot;-i\&quot;,\&quot;--dem\&quot;],\&quot;description\&quot;:\&quot;Input raster DEM file.\&quot;,\&quot;parameter_type\&quot;:{\&quot;ExistingFile\&quot;:\&quot;Raster\&quot;},\&quot;default_value\&quot;:null,\&quot;optional\&quot;:false},{\&quot;name\&quot;:\&quot;Output File\&quot;,\&quot;flags\&quot;:[\&quot;-o\&quot;,\&quot;--output\&quot;],\&quot;description\&quot;:\&quot;Output raster file.\&quot;,\&quot;parameter_type\&quot;:{\&quot;NewFile\&quot;:\&quot;Raster\&quot;},\&quot;default_value\&quot;:null,\&quot;optional\&quot;:false},{\&quot;name\&quot;:\&quot;Z Conversion Factor\&quot;,\&quot;flags\&quot;:[\&quot;--zfactor\&quot;],\&quot;description\&quot;:\&quot;Optional multiplier for when the vertical and horizontal units are not the same.\&quot;,\&quot;parameter_type\&quot;:\&quot;Float\&quot;,\&quot;default_value\&quot;:\&quot;1.0\&quot;,\&quot;optional\&quot;:true}]}&quot;</code></pre>
 <p>View the source code for a specific tool on the source code repository.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">print</span>(<span class="kw">wbt_view_code</span>(<span class="st">&quot;breach_depressions&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">print</span>(<span class="kw">wbt_view_code</span>(<span class="st">&quot;breach_depressions&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;https://github.com/jblindsay/whitebox-tools//tree/master/src/tools/hydro_analysis/breach_depressions.rs&quot;</code></pre>
 </div>
 <div id="how-to-run-tools" class="section level2">
 <h2>How to run tools?</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">library</span>(whitebox)</a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="co"># Set input raster DEM file</span></a>
-<a class="sourceLine" id="cb17-3" title="3">dem &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;DEM.tif&quot;</span>, <span class="dt">package=</span><span class="st">&quot;whitebox&quot;</span>)</a>
-<a class="sourceLine" id="cb17-4" title="4"></a>
-<a class="sourceLine" id="cb17-5" title="5"><span class="co"># Run tools</span></a>
-<a class="sourceLine" id="cb17-6" title="6"><span class="kw">feature_preserving_denoise</span>(dem, <span class="st">&quot;./smoothed.tif&quot;</span>, <span class="dt">filter=</span><span class="dv">9</span>, <span class="dt">verbose_mode =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb17-7" title="7"><span class="kw">breach_depressions</span>(<span class="st">&quot;./smoothed.tif&quot;</span>, <span class="st">&quot;./breached.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="kw">d_inf_flow_accumulation</span>(dem, <span class="st">&quot;./flow_accum.tif&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">library</span>(whitebox)</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="co"># Set input raster DEM file</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>dem &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;DEM.tif&quot;</span>, <span class="dt">package=</span><span class="st">&quot;whitebox&quot;</span>)</span>
+<span id="cb17-4"><a href="#cb17-4"></a></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co"># Run tools</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="kw">feature_preserving_denoise</span>(dem, <span class="st">&quot;./smoothed.tif&quot;</span>, <span class="dt">filter=</span><span class="dv">9</span>, <span class="dt">verbose_mode =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="kw">breach_depressions</span>(<span class="st">&quot;./smoothed.tif&quot;</span>, <span class="st">&quot;./breached.tif&quot;</span>)</span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="kw">d_inf_flow_accumulation</span>(dem, <span class="st">&quot;./flow_accum.tif&quot;</span>)</span></code></pre></div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
