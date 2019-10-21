@@ -34,7 +34,7 @@ print(wbt_view_code("breach_depressions"))
 #  dem <- system.file("extdata", "DEM.tif", package="whitebox")
 #  
 #  # Run tools
-#  feature_preserving_denoise(dem, "./smoothed.tif", filter=9, verbose_mode = TRUE)
-#  breach_depressions("./smoothed.tif", "./breached.tif")
-#  d_inf_flow_accumulation(dem, "./flow_accum.tif")
+#  wbt_feature_preserving_smoothing(dem, "./smoothed.tif", filter=9, verbose_mode = TRUE)
+#  wbt_breach_depressions("./smoothed.tif", "./breached.tif")
+#  wbt_d_inf_flow_accumulation(dem, "./flow_accum.tif")
 

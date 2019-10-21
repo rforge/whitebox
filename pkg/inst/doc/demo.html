@@ -13,7 +13,7 @@
 
 <meta name="author" content="Qiusheng Wu" />
 
-<meta name="date" content="2019-07-20" />
+<meta name="date" content="2019-10-21" />
 
 <title>whitebox examples</title>
 
@@ -306,7 +306,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">whitebox examples</h1>
 <h4 class="author">Qiusheng Wu</h4>
-<h4 class="date">2019-07-20</h4>
+<h4 class="date">2019-10-21</h4>
 
 
 
@@ -317,9 +317,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Prints the whitebox-tools help…a listing of available commands.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">print</span>(<span class="kw">wbt_help</span>())</span></code></pre></div>
 <pre><code>## Performing one-time download of WhiteboxTools binary from
-##      https://www.uoguelph.ca/~hydrogeo/WhiteboxTools/WhiteboxTools_linux_amd64.tar.xz 
+##      https://jblindsay.github.io/ghrg/WhiteboxTools/WhiteboxTools_linux_amd64.tar.xz 
 ## (This could take a few minutes, please be patient...)
-## WhiteboxTools binary is located at:  /tmp/RtmpAKLdU1/Rinst2d715a8a9b86/whitebox/WBT/whitebox_tools 
+## WhiteboxTools binary is located at:  /tmp/RtmpTAYknb/Rinst374617401796/whitebox/WBT/whitebox_tools 
 ## You can now start using whitebox
 ##     &gt; library(whitebox)
 ##     &gt; wbt_version()
@@ -362,11 +362,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [17] &quot;CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&quot;</code></pre>
 <p>Prints the whitebox-tools version.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">print</span>(<span class="kw">wbt_version</span>())</span></code></pre></div>
-<pre><code>## [1] &quot;WhiteboxTools v0.16.0 by Dr. John B. Lindsay (c) 2017-2019&quot;                   
-## [2] &quot;&quot;                                                                             
-## [3] &quot;WhiteboxTools an advanced geospatial data analysis platform developed at&quot;     
-## [4] &quot;the University of Guelph&#39;s Geomorphometry and Hydrogeomatics Research &quot;       
-## [5] &quot;Group (GHRG). See https://www.uoguelph.ca/~hydrogeo/WhiteboxTools/index.html &quot;
+<pre><code>## [1] &quot;WhiteboxTools v1.0.1 by Dr. John B. Lindsay (c) 2017-2019&quot;                  
+## [2] &quot;&quot;                                                                           
+## [3] &quot;WhiteboxTools is an advanced geospatial data analysis platform developed at&quot;
+## [4] &quot;the University of Guelph&#39;s Geomorphometry and Hydrogeomatics Research &quot;     
+## [5] &quot;Group (GHRG). See https://jblindsay.github.io/ghrg/WhiteboxTools/index.html&quot;
 ## [6] &quot;for more details.&quot;</code></pre>
 <p>Prints the toolbox for a specific tool.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">print</span>(<span class="kw">wbt_toolbox</span>())</span></code></pre></div>
@@ -388,8 +388,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [10] &quot;--vlr              Flag indicating whether or not to print the variable length records (VLRs).&quot;                                                                                         
 ## [11] &quot;--geokeys          Flag indicating whether or not to print the geokeys.&quot;                                                                                                                
 ## [12] &quot;Example usage:&quot;                                                                                                                                                                         
-## [13] &quot;&gt;&gt;./tmpRtmpAKLdU1Rinst2d715a8a9b86whiteboxWBTwhitebox_tools -r=LidarInfo -v --wd=\&quot;/path/to/data/\&quot; -i=file.las --vlr --geokeys\&quot;&quot;                                                      
-## [14] &quot;./tmpRtmpAKLdU1Rinst2d715a8a9b86whiteboxWBTwhitebox_tools -r=LidarInfo --wd=\&quot;/path/to/data/\&quot; -i=file.las&quot;</code></pre>
+## [13] &quot;&gt;&gt;./tmpRtmpTAYknbRinst374617401796whiteboxWBTwhitebox_tools -r=LidarInfo -v --wd=\&quot;/path/to/data/\&quot; -i=file.las --vlr --geokeys\&quot;&quot;                                                      
+## [14] &quot;./tmpRtmpTAYknbRinst374617401796whiteboxWBTwhitebox_tools -r=LidarInfo --wd=\&quot;/path/to/data/\&quot; -i=file.las&quot;</code></pre>
 <p>Retrieves the tool parameter descriptions for a specific tool.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">print</span>(<span class="kw">wbt_tool_parameters</span>(<span class="st">&quot;slope&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;{\&quot;parameters\&quot;: [{\&quot;name\&quot;:\&quot;Input DEM File\&quot;,\&quot;flags\&quot;:[\&quot;-i\&quot;,\&quot;--dem\&quot;],\&quot;description\&quot;:\&quot;Input raster DEM file.\&quot;,\&quot;parameter_type\&quot;:{\&quot;ExistingFile\&quot;:\&quot;Raster\&quot;},\&quot;default_value\&quot;:null,\&quot;optional\&quot;:false},{\&quot;name\&quot;:\&quot;Output File\&quot;,\&quot;flags\&quot;:[\&quot;-o\&quot;,\&quot;--output\&quot;],\&quot;description\&quot;:\&quot;Output raster file.\&quot;,\&quot;parameter_type\&quot;:{\&quot;NewFile\&quot;:\&quot;Raster\&quot;},\&quot;default_value\&quot;:null,\&quot;optional\&quot;:false},{\&quot;name\&quot;:\&quot;Z Conversion Factor\&quot;,\&quot;flags\&quot;:[\&quot;--zfactor\&quot;],\&quot;description\&quot;:\&quot;Optional multiplier for when the vertical and horizontal units are not the same.\&quot;,\&quot;parameter_type\&quot;:\&quot;Float\&quot;,\&quot;default_value\&quot;:\&quot;1.0\&quot;,\&quot;optional\&quot;:true}]}&quot;</code></pre>
@@ -404,9 +404,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <span id="cb17-3"><a href="#cb17-3"></a>dem &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;DEM.tif&quot;</span>, <span class="dt">package=</span><span class="st">&quot;whitebox&quot;</span>)</span>
 <span id="cb17-4"><a href="#cb17-4"></a></span>
 <span id="cb17-5"><a href="#cb17-5"></a><span class="co"># Run tools</span></span>
-<span id="cb17-6"><a href="#cb17-6"></a><span class="kw">feature_preserving_denoise</span>(dem, <span class="st">&quot;./smoothed.tif&quot;</span>, <span class="dt">filter=</span><span class="dv">9</span>, <span class="dt">verbose_mode =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb17-7"><a href="#cb17-7"></a><span class="kw">breach_depressions</span>(<span class="st">&quot;./smoothed.tif&quot;</span>, <span class="st">&quot;./breached.tif&quot;</span>)</span>
-<span id="cb17-8"><a href="#cb17-8"></a><span class="kw">d_inf_flow_accumulation</span>(dem, <span class="st">&quot;./flow_accum.tif&quot;</span>)</span></code></pre></div>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="kw">wbt_feature_preserving_smoothing</span>(dem, <span class="st">&quot;./smoothed.tif&quot;</span>, <span class="dt">filter=</span><span class="dv">9</span>, <span class="dt">verbose_mode =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="kw">wbt_breach_depressions</span>(<span class="st">&quot;./smoothed.tif&quot;</span>, <span class="st">&quot;./breached.tif&quot;</span>)</span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="kw">wbt_d_inf_flow_accumulation</span>(dem, <span class="st">&quot;./flow_accum.tif&quot;</span>)</span></code></pre></div>
 </div>
 
 
