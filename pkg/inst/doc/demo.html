@@ -13,7 +13,7 @@
 
 <meta name="author" content="Qiusheng Wu" />
 
-<meta name="date" content="2019-10-21" />
+<meta name="date" content="2019-11-01" />
 
 <title>whitebox examples</title>
 
@@ -306,7 +306,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">whitebox examples</h1>
 <h4 class="author">Qiusheng Wu</h4>
-<h4 class="date">2019-10-21</h4>
+<h4 class="date">2019-11-01</h4>
 
 
 
@@ -319,7 +319,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## Performing one-time download of WhiteboxTools binary from
 ##      https://jblindsay.github.io/ghrg/WhiteboxTools/WhiteboxTools_linux_amd64.tar.xz 
 ## (This could take a few minutes, please be patient...)
-## WhiteboxTools binary is located at:  /tmp/RtmpTAYknb/Rinst374617401796/whitebox/WBT/whitebox_tools 
+## WhiteboxTools binary is located at:  /tmp/RtmpGYIYVG/Rinst49cc42d0b9/whitebox/WBT/whitebox_tools 
 ## You can now start using whitebox
 ##     &gt; library(whitebox)
 ##     &gt; wbt_version()
@@ -362,7 +362,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [17] &quot;CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&quot;</code></pre>
 <p>Prints the whitebox-tools version.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">print</span>(<span class="kw">wbt_version</span>())</span></code></pre></div>
-<pre><code>## [1] &quot;WhiteboxTools v1.0.1 by Dr. John B. Lindsay (c) 2017-2019&quot;                  
+<pre><code>## [1] &quot;WhiteboxTools v1.0.2 by Dr. John B. Lindsay (c) 2017-2019&quot;                  
 ## [2] &quot;&quot;                                                                           
 ## [3] &quot;WhiteboxTools is an advanced geospatial data analysis platform developed at&quot;
 ## [4] &quot;the University of Guelph&#39;s Geomorphometry and Hydrogeomatics Research &quot;     
@@ -388,8 +388,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## [10] &quot;--vlr              Flag indicating whether or not to print the variable length records (VLRs).&quot;                                                                                         
 ## [11] &quot;--geokeys          Flag indicating whether or not to print the geokeys.&quot;                                                                                                                
 ## [12] &quot;Example usage:&quot;                                                                                                                                                                         
-## [13] &quot;&gt;&gt;./tmpRtmpTAYknbRinst374617401796whiteboxWBTwhitebox_tools -r=LidarInfo -v --wd=\&quot;/path/to/data/\&quot; -i=file.las --vlr --geokeys\&quot;&quot;                                                      
-## [14] &quot;./tmpRtmpTAYknbRinst374617401796whiteboxWBTwhitebox_tools -r=LidarInfo --wd=\&quot;/path/to/data/\&quot; -i=file.las&quot;</code></pre>
+## [13] &quot;&gt;&gt;./tmpRtmpGYIYVGRinst49cc42d0b9whiteboxWBTwhitebox_tools -r=LidarInfo -v --wd=\&quot;/path/to/data/\&quot; -i=file.las --vlr --geokeys\&quot;&quot;                                                        
+## [14] &quot;./tmpRtmpGYIYVGRinst49cc42d0b9whiteboxWBTwhitebox_tools -r=LidarInfo --wd=\&quot;/path/to/data/\&quot; -i=file.las&quot;</code></pre>
 <p>Retrieves the tool parameter descriptions for a specific tool.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">print</span>(<span class="kw">wbt_tool_parameters</span>(<span class="st">&quot;slope&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;{\&quot;parameters\&quot;: [{\&quot;name\&quot;:\&quot;Input DEM File\&quot;,\&quot;flags\&quot;:[\&quot;-i\&quot;,\&quot;--dem\&quot;],\&quot;description\&quot;:\&quot;Input raster DEM file.\&quot;,\&quot;parameter_type\&quot;:{\&quot;ExistingFile\&quot;:\&quot;Raster\&quot;},\&quot;default_value\&quot;:null,\&quot;optional\&quot;:false},{\&quot;name\&quot;:\&quot;Output File\&quot;,\&quot;flags\&quot;:[\&quot;-o\&quot;,\&quot;--output\&quot;],\&quot;description\&quot;:\&quot;Output raster file.\&quot;,\&quot;parameter_type\&quot;:{\&quot;NewFile\&quot;:\&quot;Raster\&quot;},\&quot;default_value\&quot;:null,\&quot;optional\&quot;:false},{\&quot;name\&quot;:\&quot;Z Conversion Factor\&quot;,\&quot;flags\&quot;:[\&quot;--zfactor\&quot;],\&quot;description\&quot;:\&quot;Optional multiplier for when the vertical and horizontal units are not the same.\&quot;,\&quot;parameter_type\&quot;:\&quot;Float\&quot;,\&quot;default_value\&quot;:\&quot;1.0\&quot;,\&quot;optional\&quot;:true}]}&quot;</code></pre>
