@@ -4,14 +4,16 @@
 \alias{wbt_wetness_index}
 \title{Wetness index}
 \usage{
-wbt_wetness_index(sca, slope, output, verbose_mode = FALSE)
+wbt_wetness_index(sca, slope, output, wd = NULL, verbose_mode = FALSE)
 }
 \arguments{
 \item{sca}{Input raster specific contributing area (SCA) file.}
 
-\item{slope}{Input raster slope file.}
+\item{slope}{Input raster slope file (in degrees).}
 
 \item{output}{Output raster file.}
+
+\item{wd}{Changes the working directory.}
 
 \item{verbose_mode}{Sets verbose mode. If verbose mode is False, tools will not print output messages.}
 }

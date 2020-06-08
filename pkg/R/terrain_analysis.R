@@ -5,17 +5,21 @@
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_aspect <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
+wbt_aspect <- function(dem, output, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -29,17 +33,21 @@ wbt_aspect <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param filter Size of the filter kernel.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_average_normal_vector_angular_deviation <- function(dem, output, filter=11, verbose_mode=FALSE) {
+wbt_average_normal_vector_angular_deviation <- function(dem, output, filter=11, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(filter)) {
     args <- paste(args, paste0("--filter=", filter))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -53,17 +61,109 @@ wbt_average_normal_vector_angular_deviation <- function(dem, output, filter=11, 
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param filter Size of the filter kernel.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_circular_variance_of_aspect <- function(dem, output, filter=11, verbose_mode=FALSE) {
+wbt_circular_variance_of_aspect <- function(dem, output, filter=11, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(filter)) {
     args <- paste(args, paste0("--filter=", filter))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
+  tool_name <- as.character(match.call()[[1]])
+  wbt_run_tool(tool_name, args, verbose_mode)
+}
+
+
+#' Contours from points
+#'
+#' Creates a contour coverage from a set of input points.
+#'
+#' @param input Input vector points file.
+#' @param field Input field name in attribute table.
+#' @param use_z Use the 'z' dimension of the Shapefile's geometry instead of an attribute field?.
+#' @param output Output vector lines file.
+#' @param max_triangle_edge_length Optional maximum triangle edge length; triangles larger than this size will not be gridded.
+#' @param interval Contour interval.
+#' @param base Base contour height.
+#' @param smooth Smoothing filter size (in num. points), e.g. 3, 5, 7, 9, 11.
+#' @param wd Changes the working directory.
+#' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
+#'
+#' @return Returns the tool text outputs.
+#' @export
+wbt_contours_from_points <- function(input, output, field=NULL, use_z=FALSE, max_triangle_edge_length=NULL, interval=10.0, base=0.0, smooth=5, wd=NULL, verbose_mode=FALSE) {
+  wbt_init()
+  args <- ""
+  args <- paste(args, paste0("--input=", input))
+  args <- paste(args, paste0("--output=", output))
+  if (!is.null(field)) {
+    args <- paste(args, paste0("--field=", field))
+  }
+  if (use_z) {
+    args <- paste(args, "--use_z")
+  }
+  if (!is.null(max_triangle_edge_length)) {
+    args <- paste(args, paste0("--max_triangle_edge_length=", max_triangle_edge_length))
+  }
+  if (!is.null(interval)) {
+    args <- paste(args, paste0("--interval=", interval))
+  }
+  if (!is.null(base)) {
+    args <- paste(args, paste0("--base=", base))
+  }
+  if (!is.null(smooth)) {
+    args <- paste(args, paste0("--smooth=", smooth))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
+  tool_name <- as.character(match.call()[[1]])
+  wbt_run_tool(tool_name, args, verbose_mode)
+}
+
+
+#' Contours from raster
+#'
+#' Derives a vector contour coverage from a raster surface.
+#'
+#' @param input Input surface raster file.
+#' @param output Output vector contour file.
+#' @param interval Contour interval.
+#' @param base Base contour height.
+#' @param smooth Smoothing filter size (in num. points), e.g. 3, 5, 7, 9, 11.
+#' @param tolerance Tolerance factor, in degrees (0-45); determines generalization level.
+#' @param wd Changes the working directory.
+#' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
+#'
+#' @return Returns the tool text outputs.
+#' @export
+wbt_contours_from_raster <- function(input, output, interval=10.0, base=0.0, smooth=9, tolerance=10.0, wd=NULL, verbose_mode=FALSE) {
+  wbt_init()
+  args <- ""
+  args <- paste(args, paste0("--input=", input))
+  args <- paste(args, paste0("--output=", output))
+  if (!is.null(interval)) {
+    args <- paste(args, paste0("--interval=", interval))
+  }
+  if (!is.null(base)) {
+    args <- paste(args, paste0("--base=", base))
+  }
+  if (!is.null(smooth)) {
+    args <- paste(args, paste0("--smooth=", smooth))
+  }
+  if (!is.null(tolerance)) {
+    args <- paste(args, paste0("--tolerance=", tolerance))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -78,11 +178,12 @@ wbt_circular_variance_of_aspect <- function(dem, output, filter=11, verbose_mode
 #' @param output Output raster file.
 #' @param filterx Size of the filter kernel in the x-direction.
 #' @param filtery Size of the filter kernel in the y-direction.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_dev_from_mean_elev <- function(dem, output, filterx=11, filtery=11, verbose_mode=FALSE) {
+wbt_dev_from_mean_elev <- function(dem, output, filterx=11, filtery=11, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -92,6 +193,9 @@ wbt_dev_from_mean_elev <- function(dem, output, filterx=11, filtery=11, verbose_
   }
   if (!is.null(filtery)) {
     args <- paste(args, paste0("--filtery=", filtery))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -106,11 +210,12 @@ wbt_dev_from_mean_elev <- function(dem, output, filterx=11, filtery=11, verbose_
 #' @param output Output raster file.
 #' @param filterx Size of the filter kernel in the x-direction.
 #' @param filtery Size of the filter kernel in the y-direction.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_diff_from_mean_elev <- function(dem, output, filterx=11, filtery=11, verbose_mode=FALSE) {
+wbt_diff_from_mean_elev <- function(dem, output, filterx=11, filtery=11, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -120,6 +225,9 @@ wbt_diff_from_mean_elev <- function(dem, output, filterx=11, filtery=11, verbose
   }
   if (!is.null(filtery)) {
     args <- paste(args, paste0("--filtery=", filtery))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -134,11 +242,12 @@ wbt_diff_from_mean_elev <- function(dem, output, filterx=11, filtery=11, verbose
 #' @param output Output raster file.
 #' @param azimuth Wind azimuth in degrees.
 #' @param max_dist Optional maximum search distance (unspecified if none; in xy units).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_directional_relief <- function(dem, output, azimuth=0.0, max_dist=NULL, verbose_mode=FALSE) {
+wbt_directional_relief <- function(dem, output, azimuth=0.0, max_dist=NULL, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -148,6 +257,9 @@ wbt_directional_relief <- function(dem, output, azimuth=0.0, max_dist=NULL, verb
   }
   if (!is.null(max_dist)) {
     args <- paste(args, paste0("--max_dist=", max_dist))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -162,11 +274,12 @@ wbt_directional_relief <- function(dem, output, azimuth=0.0, max_dist=NULL, verb
 #' @param output Output raster file.
 #' @param drop Vertical drop value (default is 2.0).
 #' @param out_type Output type, options include 'tangent', 'degrees', 'radians', 'distance' (default is 'tangent').
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_downslope_index <- function(dem, output, drop=2.0, out_type="tangent", verbose_mode=FALSE) {
+wbt_downslope_index <- function(dem, output, drop=2.0, out_type="tangent", wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -176,6 +289,9 @@ wbt_downslope_index <- function(dem, output, drop=2.0, out_type="tangent", verbo
   }
   if (!is.null(out_type)) {
     args <- paste(args, paste0("--out_type=", out_type))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -191,11 +307,12 @@ wbt_downslope_index <- function(dem, output, drop=2.0, out_type="tangent", verbo
 #' @param filter Size of the filter kernel.
 #' @param norm_diff Maximum difference in normal vectors, in degrees.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_edge_density <- function(dem, output, filter=11, norm_diff=5.0, zfactor=1.0, verbose_mode=FALSE) {
+wbt_edge_density <- function(dem, output, filter=11, norm_diff=5.0, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -209,6 +326,9 @@ wbt_edge_density <- function(dem, output, filter=11, norm_diff=5.0, zfactor=1.0,
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
   }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -220,15 +340,19 @@ wbt_edge_density <- function(dem, output, filter=11, norm_diff=5.0, zfactor=1.0,
 #'
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_elev_above_pit <- function(dem, output, verbose_mode=FALSE) {
+wbt_elev_above_pit <- function(dem, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -243,11 +367,12 @@ wbt_elev_above_pit <- function(dem, output, verbose_mode=FALSE) {
 #' @param filterx Size of the filter kernel in the x-direction.
 #' @param filtery Size of the filter kernel in the y-direction.
 #' @param sig_digits Number of significant digits.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_elev_percentile <- function(dem, output, filterx=11, filtery=11, sig_digits=2, verbose_mode=FALSE) {
+wbt_elev_percentile <- function(dem, output, filterx=11, filtery=11, sig_digits=2, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -261,6 +386,9 @@ wbt_elev_percentile <- function(dem, output, filterx=11, filtery=11, sig_digits=
   if (!is.null(sig_digits)) {
     args <- paste(args, paste0("--sig_digits=", sig_digits))
   }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -272,15 +400,19 @@ wbt_elev_percentile <- function(dem, output, filterx=11, filtery=11, sig_digits=
 #'
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_elev_relative_to_min_max <- function(dem, output, verbose_mode=FALSE) {
+wbt_elev_relative_to_min_max <- function(dem, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -293,16 +425,20 @@ wbt_elev_relative_to_min_max <- function(dem, output, verbose_mode=FALSE) {
 #' @param dem Input raster DEM file.
 #' @param watersheds Input raster watersheds file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_elev_relative_to_watershed_min_max <- function(dem, watersheds, output, verbose_mode=FALSE) {
+wbt_elev_relative_to_watershed_min_max <- function(dem, watersheds, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--watersheds=", watersheds))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -319,11 +455,12 @@ wbt_elev_relative_to_watershed_min_max <- function(dem, watersheds, output, verb
 #' @param num_iter Number of iterations.
 #' @param max_diff Maximum allowable absolute elevation change (optional).
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_feature_preserving_smoothing <- function(dem, output, filter=11, norm_diff=15.0, num_iter=3, max_diff=0.5, zfactor=1.0, verbose_mode=FALSE) {
+wbt_feature_preserving_smoothing <- function(dem, output, filter=11, norm_diff=15.0, num_iter=3, max_diff=0.5, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -343,6 +480,9 @@ wbt_feature_preserving_smoothing <- function(dem, output, filter=11, norm_diff=1
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
   }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -356,11 +496,12 @@ wbt_feature_preserving_smoothing <- function(dem, output, filter=11, norm_diff=1
 #' @param output Output raster file.
 #' @param azimuth Wind azimuth in degrees in degrees.
 #' @param hgt_inc Height increment value.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_fetch_analysis <- function(dem, output, azimuth=0.0, hgt_inc=0.05, verbose_mode=FALSE) {
+wbt_fetch_analysis <- function(dem, output, azimuth=0.0, hgt_inc=0.05, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -370,6 +511,9 @@ wbt_fetch_analysis <- function(dem, output, azimuth=0.0, hgt_inc=0.05, verbose_m
   }
   if (!is.null(hgt_inc)) {
     args <- paste(args, paste0("--hgt_inc=", hgt_inc))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -384,11 +528,13 @@ wbt_fetch_analysis <- function(dem, output, azimuth=0.0, hgt_inc=0.05, verbose_m
 #' @param output Output raster file.
 #' @param filter Filter size (cells).
 #' @param weight IDW weight value.
+#' @param no_edges Optional flag indicating whether to exclude NoData cells in edge regions.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_fill_missing_data <- function(input, output, filter=11, weight=2.0, verbose_mode=FALSE) {
+wbt_fill_missing_data <- function(input, output, filter=11, weight=2.0, no_edges=TRUE, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--input=", input))
@@ -398,6 +544,12 @@ wbt_fill_missing_data <- function(input, output, filter=11, weight=2.0, verbose_
   }
   if (!is.null(weight)) {
     args <- paste(args, paste0("--weight=", weight))
+  }
+  if (no_edges) {
+    args <- paste(args, "--no_edges")
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -411,17 +563,21 @@ wbt_fill_missing_data <- function(input, output, filter=11, weight=2.0, verbose_
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param line_thin Optional flag indicating whether post-processing line-thinning should be performed.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_find_ridges <- function(dem, output, line_thin=TRUE, verbose_mode=FALSE) {
+wbt_find_ridges <- function(dem, output, line_thin=TRUE, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (line_thin) {
     args <- paste(args, "--line_thin")
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -437,11 +593,12 @@ wbt_find_ridges <- function(dem, output, line_thin=TRUE, verbose_mode=FALSE) {
 #' @param azimuth Illumination source azimuth in degrees.
 #' @param altitude Illumination source altitude in degrees.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_hillshade <- function(dem, output, azimuth=315.0, altitude=30.0, zfactor=1.0, verbose_mode=FALSE) {
+wbt_hillshade <- function(dem, output, azimuth=315.0, altitude=30.0, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -454,6 +611,9 @@ wbt_hillshade <- function(dem, output, azimuth=315.0, altitude=30.0, zfactor=1.0
   }
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -468,11 +628,12 @@ wbt_hillshade <- function(dem, output, azimuth=315.0, altitude=30.0, zfactor=1.0
 #' @param output Output raster file.
 #' @param azimuth Wind azimuth in degrees.
 #' @param max_dist Optional maximum search distance (unspecified if none; in xy units).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_horizon_angle <- function(dem, output, azimuth=0.0, max_dist=NULL, verbose_mode=FALSE) {
+wbt_horizon_angle <- function(dem, output, azimuth=0.0, max_dist=NULL, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -482,6 +643,9 @@ wbt_horizon_angle <- function(dem, output, azimuth=0.0, max_dist=NULL, verbose_m
   }
   if (!is.null(max_dist)) {
     args <- paste(args, paste0("--max_dist=", max_dist))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -495,17 +659,21 @@ wbt_horizon_angle <- function(dem, output, azimuth=0.0, max_dist=NULL, verbose_m
 #' @param inputs Input DEM files.
 #' @param watershed Input watershed files (optional).
 #' @param output Output HTML file (default name will be based on input file if unspecified).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_hypsometric_analysis <- function(inputs, output, watershed=NULL, verbose_mode=FALSE) {
+wbt_hypsometric_analysis <- function(inputs, output, watershed=NULL, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--inputs=", inputs))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(watershed)) {
     args <- paste(args, paste0("--watershed=", watershed))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -522,11 +690,12 @@ wbt_hypsometric_analysis <- function(inputs, output, watershed=NULL, verbose_mod
 #' @param min_scale Minimum search neighbourhood radius in grid cells.
 #' @param max_scale Maximum search neighbourhood radius in grid cells.
 #' @param step Step size as any positive non-zero integer.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_max_anisotropy_dev <- function(dem, out_mag, out_scale, max_scale, min_scale=3, step=2, verbose_mode=FALSE) {
+wbt_max_anisotropy_dev <- function(dem, out_mag, out_scale, max_scale, min_scale=3, step=2, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -538,6 +707,9 @@ wbt_max_anisotropy_dev <- function(dem, out_mag, out_scale, max_scale, min_scale
   }
   if (!is.null(step)) {
     args <- paste(args, paste0("--step=", step))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -554,11 +726,12 @@ wbt_max_anisotropy_dev <- function(dem, out_mag, out_scale, max_scale, min_scale
 #' @param min_scale Minimum search neighbourhood radius in grid cells.
 #' @param max_scale Maximum search neighbourhood radius in grid cells.
 #' @param step Step size as any positive non-zero integer.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_max_anisotropy_dev_signature <- function(dem, points, output, max_scale, min_scale=1, step=1, verbose_mode=FALSE) {
+wbt_max_anisotropy_dev_signature <- function(dem, points, output, max_scale, min_scale=1, step=1, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -570,6 +743,9 @@ wbt_max_anisotropy_dev_signature <- function(dem, points, output, max_scale, min
   }
   if (!is.null(step)) {
     args <- paste(args, paste0("--step=", step))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -583,17 +759,21 @@ wbt_max_anisotropy_dev_signature <- function(dem, points, output, max_scale, min
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param log Optional flag to request the output be log-transformed.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_max_branch_length <- function(dem, output, log=FALSE, verbose_mode=FALSE) {
+wbt_max_branch_length <- function(dem, output, log=FALSE, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (log) {
     args <- paste(args, "--log")
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -610,11 +790,12 @@ wbt_max_branch_length <- function(dem, output, log=FALSE, verbose_mode=FALSE) {
 #' @param min_scale Minimum search neighbourhood radius in grid cells.
 #' @param max_scale Maximum search neighbourhood radius in grid cells.
 #' @param step Step size as any positive non-zero integer.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_max_difference_from_mean <- function(dem, out_mag, out_scale, min_scale, max_scale, step=1, verbose_mode=FALSE) {
+wbt_max_difference_from_mean <- function(dem, out_mag, out_scale, min_scale, max_scale, step=1, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -624,6 +805,9 @@ wbt_max_difference_from_mean <- function(dem, out_mag, out_scale, min_scale, max
   args <- paste(args, paste0("--max_scale=", max_scale))
   if (!is.null(step)) {
     args <- paste(args, paste0("--step=", step))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -636,15 +820,19 @@ wbt_max_difference_from_mean <- function(dem, out_mag, out_scale, min_scale, max
 #'
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_max_downslope_elev_change <- function(dem, output, verbose_mode=FALSE) {
+wbt_max_downslope_elev_change <- function(dem, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -660,11 +848,12 @@ wbt_max_downslope_elev_change <- function(dem, output, verbose_mode=FALSE) {
 #' @param min_scale Minimum search neighbourhood radius in grid cells.
 #' @param max_scale Maximum search neighbourhood radius in grid cells.
 #' @param step Step size as any positive non-zero integer.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_max_elev_dev_signature <- function(dem, points, output, min_scale, max_scale, step=10, verbose_mode=FALSE) {
+wbt_max_elev_dev_signature <- function(dem, points, output, min_scale, max_scale, step=10, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -674,6 +863,9 @@ wbt_max_elev_dev_signature <- function(dem, points, output, min_scale, max_scale
   args <- paste(args, paste0("--max_scale=", max_scale))
   if (!is.null(step)) {
     args <- paste(args, paste0("--step=", step))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -690,11 +882,12 @@ wbt_max_elev_dev_signature <- function(dem, points, output, min_scale, max_scale
 #' @param min_scale Minimum search neighbourhood radius in grid cells.
 #' @param max_scale Maximum search neighbourhood radius in grid cells.
 #' @param step Step size as any positive non-zero integer.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_max_elevation_deviation <- function(dem, out_mag, out_scale, min_scale, max_scale, step=1, verbose_mode=FALSE) {
+wbt_max_elevation_deviation <- function(dem, out_mag, out_scale, min_scale, max_scale, step=1, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -704,6 +897,9 @@ wbt_max_elevation_deviation <- function(dem, out_mag, out_scale, min_scale, max_
   args <- paste(args, paste0("--max_scale=", max_scale))
   if (!is.null(step)) {
     args <- paste(args, paste0("--step=", step))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -716,15 +912,19 @@ wbt_max_elevation_deviation <- function(dem, out_mag, out_scale, min_scale, max_
 #'
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_min_downslope_elev_change <- function(dem, output, verbose_mode=FALSE) {
+wbt_min_downslope_elev_change <- function(dem, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -742,11 +942,12 @@ wbt_min_downslope_elev_change <- function(dem, output, verbose_mode=FALSE) {
 #' @param step Step size as any positive non-zero integer.
 #' @param num_steps Number of steps.
 #' @param step_nonlinearity Step nonlinearity factor (1.0-2.0 is typical).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_multiscale_elevation_percentile <- function(dem, out_mag, out_scale, sig_digits=3, min_scale=4, step=1, num_steps=10, step_nonlinearity=1.0, verbose_mode=FALSE) {
+wbt_multiscale_elevation_percentile <- function(dem, out_mag, out_scale, sig_digits=3, min_scale=4, step=1, num_steps=10, step_nonlinearity=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -767,6 +968,9 @@ wbt_multiscale_elevation_percentile <- function(dem, out_mag, out_scale, sig_dig
   if (!is.null(step_nonlinearity)) {
     args <- paste(args, paste0("--step_nonlinearity=", step_nonlinearity))
   }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -782,11 +986,12 @@ wbt_multiscale_elevation_percentile <- function(dem, out_mag, out_scale, sig_dig
 #' @param min_scale Minimum search neighbourhood radius in grid cells.
 #' @param max_scale Maximum search neighbourhood radius in grid cells.
 #' @param step Step size as any positive non-zero integer.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_multiscale_roughness <- function(dem, out_mag, out_scale, max_scale, min_scale=1, step=1, verbose_mode=FALSE) {
+wbt_multiscale_roughness <- function(dem, out_mag, out_scale, max_scale, min_scale=1, step=1, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -798,6 +1003,9 @@ wbt_multiscale_roughness <- function(dem, out_mag, out_scale, max_scale, min_sca
   }
   if (!is.null(step)) {
     args <- paste(args, paste0("--step=", step))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -814,11 +1022,12 @@ wbt_multiscale_roughness <- function(dem, out_mag, out_scale, max_scale, min_sca
 #' @param min_scale Minimum search neighbourhood radius in grid cells.
 #' @param max_scale Maximum search neighbourhood radius in grid cells.
 #' @param step Step size as any positive non-zero integer.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_multiscale_roughness_signature <- function(dem, points, output, max_scale, min_scale=1, step=1, verbose_mode=FALSE) {
+wbt_multiscale_roughness_signature <- function(dem, points, output, max_scale, min_scale=1, step=1, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -830,6 +1039,9 @@ wbt_multiscale_roughness_signature <- function(dem, points, output, max_scale, m
   }
   if (!is.null(step)) {
     args <- paste(args, paste0("--step=", step))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -847,11 +1059,12 @@ wbt_multiscale_roughness_signature <- function(dem, points, output, max_scale, m
 #' @param step Step size as any positive non-zero integer.
 #' @param num_steps Number of steps.
 #' @param step_nonlinearity Step nonlinearity factor (1.0-2.0 is typical).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_multiscale_std_dev_normals <- function(dem, out_mag, out_scale, min_scale=1, step=1, num_steps=10, step_nonlinearity=1.0, verbose_mode=FALSE) {
+wbt_multiscale_std_dev_normals <- function(dem, out_mag, out_scale, min_scale=1, step=1, num_steps=10, step_nonlinearity=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -869,6 +1082,9 @@ wbt_multiscale_std_dev_normals <- function(dem, out_mag, out_scale, min_scale=1,
   if (!is.null(step_nonlinearity)) {
     args <- paste(args, paste0("--step_nonlinearity=", step_nonlinearity))
   }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -885,11 +1101,12 @@ wbt_multiscale_std_dev_normals <- function(dem, out_mag, out_scale, min_scale=1,
 #' @param step Step size as any positive non-zero integer.
 #' @param num_steps Number of steps.
 #' @param step_nonlinearity Step nonlinearity factor (1.0-2.0 is typical).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_multiscale_std_dev_normals_signature <- function(dem, points, output, min_scale=1, step=1, num_steps=10, step_nonlinearity=1.0, verbose_mode=FALSE) {
+wbt_multiscale_std_dev_normals_signature <- function(dem, points, output, min_scale=1, step=1, num_steps=10, step_nonlinearity=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -907,6 +1124,9 @@ wbt_multiscale_std_dev_normals_signature <- function(dem, points, output, min_sc
   if (!is.null(step_nonlinearity)) {
     args <- paste(args, paste0("--step_nonlinearity=", step_nonlinearity))
   }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -921,11 +1141,12 @@ wbt_multiscale_std_dev_normals_signature <- function(dem, points, output, min_sc
 #' @param broad Input broad-scale topographic position (DEVmax) raster file.
 #' @param output Output raster file.
 #' @param lightness Image lightness value (default is 1.2).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_multiscale_topographic_position_image <- function(local, meso, broad, output, lightness=1.2, verbose_mode=FALSE) {
+wbt_multiscale_topographic_position_image <- function(local, meso, broad, output, lightness=1.2, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--local=", local))
@@ -934,6 +1155,9 @@ wbt_multiscale_topographic_position_image <- function(local, meso, broad, output
   args <- paste(args, paste0("--output=", output))
   if (!is.null(lightness)) {
     args <- paste(args, paste0("--lightness=", lightness))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -946,15 +1170,19 @@ wbt_multiscale_topographic_position_image <- function(local, meso, broad, output
 #'
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_num_downslope_neighbours <- function(dem, output, verbose_mode=FALSE) {
+wbt_num_downslope_neighbours <- function(dem, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -966,15 +1194,19 @@ wbt_num_downslope_neighbours <- function(dem, output, verbose_mode=FALSE) {
 #'
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_num_upslope_neighbours <- function(dem, output, verbose_mode=FALSE) {
+wbt_num_upslope_neighbours <- function(dem, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -990,11 +1222,12 @@ wbt_num_upslope_neighbours <- function(dem, output, verbose_mode=FALSE) {
 #' @param prof Profile curvature threshold value (default is 0.1).
 #' @param plan Plan curvature threshold value (default is 0.0).
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_pennock_landform_class <- function(dem, output, slope=3.0, prof=0.1, plan=0.0, zfactor=1.0, verbose_mode=FALSE) {
+wbt_pennock_landform_class <- function(dem, output, slope=3.0, prof=0.1, plan=0.0, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -1011,6 +1244,9 @@ wbt_pennock_landform_class <- function(dem, output, slope=3.0, prof=0.1, plan=0.
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
   }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -1024,11 +1260,12 @@ wbt_pennock_landform_class <- function(dem, output, slope=3.0, prof=0.1, plan=0.
 #' @param output Output raster file.
 #' @param filterx Size of the filter kernel in the x-direction.
 #' @param filtery Size of the filter kernel in the y-direction.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_percent_elev_range <- function(dem, output, filterx=3, filtery=3, verbose_mode=FALSE) {
+wbt_percent_elev_range <- function(dem, output, filterx=3, filtery=3, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -1038,6 +1275,9 @@ wbt_percent_elev_range <- function(dem, output, filterx=3, filtery=3, verbose_mo
   }
   if (!is.null(filtery)) {
     args <- paste(args, paste0("--filtery=", filtery))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1051,17 +1291,21 @@ wbt_percent_elev_range <- function(dem, output, filterx=3, filtery=3, verbose_mo
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_plan_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
+wbt_plan_curvature <- function(dem, output, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1075,16 +1319,20 @@ wbt_plan_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
 #' @param lines Input vector line file.
 #' @param surface Input raster surface file.
 #' @param output Output HTML file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_profile <- function(lines, surface, output, verbose_mode=FALSE) {
+wbt_profile <- function(lines, surface, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--lines=", lines))
   args <- paste(args, paste0("--surface=", surface))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -1097,17 +1345,21 @@ wbt_profile <- function(lines, surface, output, verbose_mode=FALSE) {
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_profile_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
+wbt_profile_curvature <- function(dem, output, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1122,11 +1374,12 @@ wbt_profile_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) 
 #' @param output Output raster file.
 #' @param azimuth Illumination source azimuth.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_relative_aspect <- function(dem, output, azimuth=0.0, zfactor=1.0, verbose_mode=FALSE) {
+wbt_relative_aspect <- function(dem, output, azimuth=0.0, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -1136,6 +1389,9 @@ wbt_relative_aspect <- function(dem, output, azimuth=0.0, zfactor=1.0, verbose_m
   }
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1150,11 +1406,12 @@ wbt_relative_aspect <- function(dem, output, azimuth=0.0, zfactor=1.0, verbose_m
 #' @param output Output raster file.
 #' @param filterx Size of the filter kernel in the x-direction.
 #' @param filtery Size of the filter kernel in the y-direction.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_relative_topographic_position <- function(dem, output, filterx=11, filtery=11, verbose_mode=FALSE) {
+wbt_relative_topographic_position <- function(dem, output, filterx=11, filtery=11, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -1164,6 +1421,9 @@ wbt_relative_topographic_position <- function(dem, output, filterx=11, filtery=1
   }
   if (!is.null(filtery)) {
     args <- paste(args, paste0("--filtery=", filtery))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1178,11 +1438,12 @@ wbt_relative_topographic_position <- function(dem, output, filterx=11, filtery=1
 #' @param output Output raster file.
 #' @param filter Filter size (cells).
 #' @param slope Slope threshold value.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_remove_off_terrain_objects <- function(dem, output, filter=11, slope=15.0, verbose_mode=FALSE) {
+wbt_remove_off_terrain_objects <- function(dem, output, filter=11, slope=15.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -1192,6 +1453,9 @@ wbt_remove_off_terrain_objects <- function(dem, output, filter=11, slope=15.0, v
   }
   if (!is.null(slope)) {
     args <- paste(args, paste0("--slope=", slope))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1205,17 +1469,21 @@ wbt_remove_off_terrain_objects <- function(dem, output, filter=11, slope=15.0, v
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_ruggedness_index <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
+wbt_ruggedness_index <- function(dem, output, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1231,11 +1499,12 @@ wbt_ruggedness_index <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
 #' @param output Output raster file.
 #' @param sca_exponent SCA exponent value.
 #' @param slope_exponent Slope exponent value.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_sediment_transport_index <- function(sca, slope, output, sca_exponent=0.4, slope_exponent=1.3, verbose_mode=FALSE) {
+wbt_sediment_transport_index <- function(sca, slope, output, sca_exponent=0.4, slope_exponent=1.3, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--sca=", sca))
@@ -1246,6 +1515,9 @@ wbt_sediment_transport_index <- function(sca, slope, output, sca_exponent=0.4, s
   }
   if (!is.null(slope_exponent)) {
     args <- paste(args, paste0("--slope_exponent=", slope_exponent))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1259,17 +1531,25 @@ wbt_sediment_transport_index <- function(sca, slope, output, sca_exponent=0.4, s
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param units Units of output raster; options include 'degrees', 'radians', 'percent'.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_slope <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
+wbt_slope <- function(dem, output, zfactor=1.0, units="degrees", wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(units)) {
+    args <- paste(args, paste0("--units=", units))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1283,17 +1563,21 @@ wbt_slope <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
 #' @param inputs Input DEM files.
 #' @param watershed Input watershed files (optional).
 #' @param output Output HTML file (default name will be based on input file if unspecified).
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_slope_vs_elevation_plot <- function(inputs, output, watershed=NULL, verbose_mode=FALSE) {
+wbt_slope_vs_elevation_plot <- function(inputs, output, watershed=NULL, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--inputs=", inputs))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(watershed)) {
     args <- paste(args, paste0("--watershed=", watershed))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1307,17 +1591,21 @@ wbt_slope_vs_elevation_plot <- function(inputs, output, watershed=NULL, verbose_
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param filter Size of the filter kernel.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_spherical_std_dev_of_normals <- function(dem, output, filter=11, verbose_mode=FALSE) {
+wbt_spherical_std_dev_of_normals <- function(dem, output, filter=11, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(filter)) {
     args <- paste(args, paste0("--filter=", filter))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1333,11 +1621,12 @@ wbt_spherical_std_dev_of_normals <- function(dem, output, filter=11, verbose_mod
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
 #' @param filterx Size of the filter kernel in the x-direction.
 #' @param filtery Size of the filter kernel in the y-direction.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_standard_deviation_of_slope <- function(input, output, zfactor=1.0, filterx=11, filtery=11, verbose_mode=FALSE) {
+wbt_standard_deviation_of_slope <- function(input, output, zfactor=1.0, filterx=11, filtery=11, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--input=", input))
@@ -1350,6 +1639,9 @@ wbt_standard_deviation_of_slope <- function(input, output, zfactor=1.0, filterx=
   }
   if (!is.null(filtery)) {
     args <- paste(args, paste0("--filtery=", filtery))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1364,11 +1656,12 @@ wbt_standard_deviation_of_slope <- function(input, output, zfactor=1.0, filterx=
 #' @param slope Input raster slope file.
 #' @param output Output raster file.
 #' @param exponent SCA exponent value.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_stream_power_index <- function(sca, slope, output, exponent=1.0, verbose_mode=FALSE) {
+wbt_stream_power_index <- function(sca, slope, output, exponent=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--sca=", sca))
@@ -1376,6 +1669,9 @@ wbt_stream_power_index <- function(sca, slope, output, exponent=1.0, verbose_mod
   args <- paste(args, paste0("--output=", output))
   if (!is.null(exponent)) {
     args <- paste(args, paste0("--exponent=", exponent))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1388,15 +1684,19 @@ wbt_stream_power_index <- function(sca, slope, output, exponent=1.0, verbose_mod
 #'
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_surface_area_ratio <- function(dem, output, verbose_mode=FALSE) {
+wbt_surface_area_ratio <- function(dem, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
@@ -1409,17 +1709,21 @@ wbt_surface_area_ratio <- function(dem, output, verbose_mode=FALSE) {
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_tangential_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
+wbt_tangential_curvature <- function(dem, output, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1433,17 +1737,21 @@ wbt_tangential_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALS
 #' @param dem Input raster DEM file.
 #' @param output Output raster file.
 #' @param zfactor Optional multiplier for when the vertical and horizontal units are not the same.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_total_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
+wbt_total_curvature <- function(dem, output, zfactor=1.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
   args <- paste(args, paste0("--output=", output))
   if (!is.null(zfactor)) {
     args <- paste(args, paste0("--zfactor=", zfactor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1458,11 +1766,12 @@ wbt_total_curvature <- function(dem, output, zfactor=1.0, verbose_mode=FALSE) {
 #' @param stations Input viewing station vector file.
 #' @param output Output raster file.
 #' @param height Viewing station height, in z units.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_viewshed <- function(dem, stations, output, height=2.0, verbose_mode=FALSE) {
+wbt_viewshed <- function(dem, stations, output, height=2.0, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -1470,6 +1779,9 @@ wbt_viewshed <- function(dem, stations, output, height=2.0, verbose_mode=FALSE) 
   args <- paste(args, paste0("--output=", output))
   if (!is.null(height)) {
     args <- paste(args, paste0("--height=", height))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1484,11 +1796,12 @@ wbt_viewshed <- function(dem, stations, output, height=2.0, verbose_mode=FALSE) 
 #' @param output Output raster file.
 #' @param height Viewing station height, in z units.
 #' @param res_factor The resolution factor determines the density of measured viewsheds.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_visibility_index <- function(dem, output, height=2.0, res_factor=2, verbose_mode=FALSE) {
+wbt_visibility_index <- function(dem, output, height=2.0, res_factor=2, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--dem=", dem))
@@ -1498,6 +1811,9 @@ wbt_visibility_index <- function(dem, output, height=2.0, res_factor=2, verbose_
   }
   if (!is.null(res_factor)) {
     args <- paste(args, paste0("--res_factor=", res_factor))
+  }
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
   }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
@@ -1509,18 +1825,22 @@ wbt_visibility_index <- function(dem, output, height=2.0, res_factor=2, verbose_
 #' Calculates the topographic wetness index, Ln(A / tan(slope)).
 #'
 #' @param sca Input raster specific contributing area (SCA) file.
-#' @param slope Input raster slope file.
+#' @param slope Input raster slope file (in degrees).
 #' @param output Output raster file.
+#' @param wd Changes the working directory.
 #' @param verbose_mode Sets verbose mode. If verbose mode is False, tools will not print output messages.
 #'
 #' @return Returns the tool text outputs.
 #' @export
-wbt_wetness_index <- function(sca, slope, output, verbose_mode=FALSE) {
+wbt_wetness_index <- function(sca, slope, output, wd=NULL, verbose_mode=FALSE) {
   wbt_init()
   args <- ""
   args <- paste(args, paste0("--sca=", sca))
   args <- paste(args, paste0("--slope=", slope))
   args <- paste(args, paste0("--output=", output))
+  if (!is.null(wd)) {
+    args <- paste(args, paste0("--wd=", wd))
+  }
   tool_name <- as.character(match.call()[[1]])
   wbt_run_tool(tool_name, args, verbose_mode)
 }
