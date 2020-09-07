@@ -7,7 +7,7 @@
 wbt_lidar_rooftop_analysis(
   buildings,
   output,
-  i = NULL,
+  input = NULL,
   radius = 2,
   num_iter = 50,
   num_samples = 10,
@@ -26,7 +26,7 @@ wbt_lidar_rooftop_analysis(
 
 \item{output}{Output vector polygon file.}
 
-\item{i}{Input LiDAR file.}
+\item{input}{Input LiDAR file.}
 
 \item{radius}{Search Radius.}
 
@@ -34,15 +34,15 @@ wbt_lidar_rooftop_analysis(
 
 \item{num_samples}{Number of sample points on which to build the model.}
 
-\item{threshold}{Threshold used to determine inlier points.}
+\item{threshold}{Threshold used to determine inlier points (in elevation units).}
 
-\item{model_size}{Acceptable model size.}
+\item{model_size}{Acceptable model size, in points.}
 
-\item{max_slope}{Maximum planar slope.}
+\item{max_slope}{Maximum planar slope, in degrees.}
 
 \item{norm_diff}{Maximum difference in normal vectors, in degrees.}
 
-\item{azimuth}{Illumination source azimuth in degrees.}
+\item{azimuth}{Illumination source azimuth, in degrees.}
 
 \item{altitude}{Illumination source altitude in degrees.}
 
